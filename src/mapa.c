@@ -118,6 +118,6 @@ void procuraPosBoss(Apmapa terreno,Apguiygas *boss,int power, int recompensa){
 }
 
 void desalocaMapa(Apmapa* terreno) {
-    free((*terreno)->mat);
+    // free((*terreno)->mat);
     free(terreno);
 }
