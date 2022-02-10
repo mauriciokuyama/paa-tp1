@@ -10,3 +10,4 @@ typedef struct Mapa{
 
 void inicializaMapa(Apmapa* terreno);
 void fazMapaVazio(Apmapa* terreno);
+void leArqv();
