@@ -16,5 +16,5 @@ void preencheBoss(Apguiygas *boss, int forca, int recompensa, int posx, int posy
     (*boss)->posy = posy;
 }
 void desalocaBoss(Apguiygas *boss){
-    free(boss);
+    free(*boss);
 }

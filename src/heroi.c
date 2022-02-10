@@ -15,5 +15,5 @@ void preencheHeroi(Apheroi* hero, int power, int pk,int posx, int posy) {
     (*hero)->atualy = posy;
 }
 void desalocaHeroi(Apheroi* hero){
-    free(hero);
+    free(*hero);
 }

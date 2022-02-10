@@ -84,7 +84,7 @@ void leArqv()
     fclose(arq);
     procuraPosHeroi(terreno,&hero,poderhero,qtpk);
     procuraPosBoss(terreno,&G,poderG,recompensaG);
-    printf("%d %d %d %d",G->forca,G->recompensa,(G->posx+1),(G->posy+1));
+    printf("%d %d %d %d\n",G->forca,G->recompensa,(G->posx+1),(G->posy+1));
     
     
     desalocaHeroi(&hero);
@@ -118,6 +118,6 @@ void procuraPosBoss(Apmapa terreno,Apguiygas *boss,int power, int recompensa){
 }
 
 void desalocaMapa(Apmapa* terreno) {
-    // free((*terreno)->mat);
-    free(terreno);
+    free((*terreno)->mat);
+    free(*terreno);
 }
