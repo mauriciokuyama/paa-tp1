@@ -1,10 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct Monstro *Apmonstro;
+typedef struct Guiygas *Apmonstro;
 
-typedef struct Monstro{
-    char nomemonstro;
+typedef struct Guiygas{
     int forca, recompensa,posx,posy;
 }monstro;
 

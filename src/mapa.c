@@ -38,15 +38,15 @@ void imprimeMapa(Apmapa terreno)
 void leArqv()
 {
     FILE *arq;
-    // char Linha[100];
-    // char *result;
+    char Linha[100];
+    char *result;
     //  U, T, S, B e G.
     Apmapa terreno;
     Apheroi hero;
     Apmonstro U, T, S, B, G;
     int poderhero, qtpk, poderU, recompensaU, poderT, recompensaT, poderS, recompensaS, poderB,
         recompensaB, poderG, recompensaG,mapax,mapay;
-    int i;
+    int i,j;
     arq = fopen("../data/mapa1.txt", "rt");
     if (arq == NULL)
     {
@@ -68,20 +68,30 @@ void leArqv()
     fscanf(arq, "%d %d", &mapax, &mapay);
     inicializaMapa(&terreno);
     fazMapaVazio(&terreno,mapax,mapay);
-    imprimeMapa(terreno);
-    // i = 1;
-    // while (!feof(arq))
-    // {
+    i = 0;
+    fgets(Linha, 100, arq);
+    while (!feof(arq))
+    {
 
-    //     // result = fgets(Linha, 100, arq);
-    //     // if (result)
-    //     //     printf("Linha %d : %s", i, Linha);
-
-    //     i++;
-    // }
-    printf("\n");
+        result = fgets(Linha, 100, arq);
+        if (result){
+            for (j=0;j<mapay;j++)
+                (*terreno).mat[i][j]=Linha[j];
+        } 
+        i++;
+    }
+    procuraPosHeroi(terreno,&hero,poderhero,qtpk);
     fclose(arq);
 }
-void addHeroinoMapa(Apmapa *terreno, Apheroi *hero)
-{
+
+void procuraPosHeroi(Apmapa terreno,Apheroi *hero,int power, int pk){
+    int i,j;
+    for (i=0;i<terreno->tamanhox;i++) {
+        for (j=0;j<terreno->tamanhoy;j++) {
+            if (terreno->mat[i][j] == '@'){
+                preencheHeroi(hero,power,pk,i,j);
+                return;
+            }
+        }   
+    }
 }
