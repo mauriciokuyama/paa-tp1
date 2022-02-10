@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "heroi.c"
+
 typedef struct Mapa *Apmapa;
 
 typedef struct Mapa

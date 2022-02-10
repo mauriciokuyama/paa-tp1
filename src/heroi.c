@@ -13,5 +13,4 @@ void preencheHeroi(Apheroi* hero, int power, int pk,int posx, int posy) {
     (*hero)->qtPk = pk;
     (*hero)->atualx = posx;
     (*hero)->atualy = posy;
-
 }

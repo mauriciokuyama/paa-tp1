@@ -59,16 +59,3 @@ void leArqv()
     printf("\n");
     fclose(arq);
 }
-
-int main()
-{
-    // Apmapa teste;
-    // int tamanhox, tamanhoy;
-    // tamanhox = 10;
-    // tamanhoy = 10;
-    // inicializaMapa(&teste);
-    // fazMapaVazio(&teste, tamanhox, tamanhoy);
-    // imprimeMapa(teste);
-    leArqv();
-    return 0;
-}
