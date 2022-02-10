@@ -14,3 +14,4 @@ typedef struct Heroi
 
 void inicializaHeroi(Apheroi* hero);
 void preencheHeroi(Apheroi* hero, int power, int pk,int posx, int posy);
+void desalocaHeroi(Apheroi* hero);

@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct Guiygas *Apmonstro;
+typedef struct Guiygas *Apguiygas;
 
-typedef struct Guiygas{
-    int forca, recompensa,posx,posy;
-}monstro;
+typedef struct Guiygas
+{
+    int forca, recompensa, posx, posy;
+} guiygas;
 
-void inicializaMonstro(Apmonstro* monster);
-void preencheMonstro(Apmonstro* monster,char nome, int forca, int recompensa,int posx,int posy);
+void inicializaBoss(Apguiygas *boss);
+void preencheBoss(Apguiygas *boss, int forca, int recompensa, int posx, int posy);
+void desalocaBoss(Apguiygas *boss);

@@ -1,19 +1,20 @@
 #include "guiygas.h"
 
-void inicializaMonstro(Apmonstro *monster)
+void inicializaBoss(Apguiygas *boss)
 {
-    (*monster) = (Apmonstro)malloc(sizeof(monstro));
-    (*monster)->nomemonstro = ' ';
-    (*monster)->forca = 0;
-    (*monster)->recompensa = 0;
-    (*monster)->posx = 0;
-    (*monster)->posy = 0;
+    (*boss) = (Apguiygas)malloc(sizeof(guiygas));
+    (*boss)->forca = 0;
+    (*boss)->recompensa = 0;
+    (*boss)->posx = 0;
+    (*boss)->posy = 0;
 }
-void preencheMonstro(Apmonstro *monster,char nome, int forca, int recompensa, int posx, int posy)
+void preencheBoss(Apguiygas *boss, int forca, int recompensa, int posx, int posy)
 {
-    (*monster)->nomemonstro = nome;
-    (*monster)->forca = forca;
-    (*monster)->recompensa = recompensa;
-    (*monster)->posx = posx;
-    (*monster)->posy = posy;    
+    (*boss)->forca = forca;
+    (*boss)->recompensa = recompensa;
+    (*boss)->posx = posx;
+    (*boss)->posy = posy;
+}
+void desalocaBoss(Apguiygas *boss){
+    free(boss);
 }

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "heroi.c"
-#include "monstro.c"
+#include "guiygas.c"
 
 typedef struct Mapa *Apmapa;
 
@@ -18,3 +18,5 @@ void inicializaMapa(Apmapa *terreno);
 void fazMapaVazio(Apmapa *terreno, int x, int y);
 void imprimeMapa(Apmapa terreno);
 void procuraPosHeroi(Apmapa terreno,Apheroi *hero,int power, int pk);
+void procuraPosBoss(Apmapa terreno,Apguiygas *boss,int power, int recompensa);
+void desalocaMapa(Apmapa* terreno);
