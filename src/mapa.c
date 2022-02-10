@@ -53,7 +53,7 @@ void leArqv()
 
         result = fgets(Linha, 100, arq);
         if (result)
-            // printf("Linha %d : %s", i, Linha);
+            printf("Linha %d : %s", i, Linha);
         i++;
     }
     printf("\n");
