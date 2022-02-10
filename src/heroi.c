@@ -1,9 +1,9 @@
 #include "heroi.h"
 
 void inicializaHeroi(Apheroi* hero){
-    (hero) = (Apheroi)malloc(sizeof(heroi));
-    (*hero)-> atualx = NULL;
-    (*hero)-> atualy = NULL;
+    (*hero) = (Apheroi)malloc(sizeof(heroi));
+    (*hero)-> atualx = -1;
+    (*hero)-> atualy = -1;
     (*hero)-> poder = 0;
     (*hero)-> qtPk = 0;
 }
