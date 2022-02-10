@@ -59,3 +59,6 @@ void leArqv()
     printf("\n");
     fclose(arq);
 }
+void addHeroinoMapa(Apmapa *terreno, Apheroi *hero){
+    
+}

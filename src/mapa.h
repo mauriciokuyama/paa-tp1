@@ -11,7 +11,9 @@ typedef struct Mapa
     int tamanhox, tamanhoy;
 } mapa;
 
+void leArqv();
 void inicializaMapa(Apmapa *terreno);
 void fazMapaVazio(Apmapa *terreno, int x, int y);
 void imprimeMapa(Apmapa terreno);
-void leArqv();
+
+void addHeroinoMapa(Apmapa *terreno, Apheroi *hero);
