@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "heroi.c"
+#include "monstro.c"
 
 typedef struct Mapa *Apmapa;
 

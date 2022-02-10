@@ -1,4 +1,4 @@
-#include "mapa.h"
+#include "mapa.c"
 
 int main()
 {
