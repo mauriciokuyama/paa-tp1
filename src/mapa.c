@@ -46,8 +46,8 @@ void leArqv()
     ApMonstro U, T, S, B;
     Apguiygas G;
     int poderhero, qtpk, poderU, recompensaU, poderT, recompensaT, poderS, recompensaS, poderB,
-        recompensaB, poderG, recompensaG,mapax,mapay;
-    int i,j;
+        recompensaB, poderG, recompensaG, mapax, mapay;
+    int i, j;
     arq = fopen("../data/mapa1.txt", "rt");
     if (arq == NULL)
     {
@@ -68,29 +68,29 @@ void leArqv()
     inicializaBoss(&G);
     fscanf(arq, "%d %d", &mapax, &mapay);
     inicializaMapa(&terreno);
-    fazMapaVazio(&terreno,mapax,mapay);
+    fazMapaVazio(&terreno, mapax, mapay);
     i = 0;
     fgets(Linha, 100, arq);
     while (!feof(arq))
     {
 
         result = fgets(Linha, 100, arq);
-        if (result){
-            for (j=0;j<mapay;j++)
-                (*terreno).mat[i][j]=Linha[j];
-        } 
+        if (result)
+        {
+            for (j = 0; j < mapay; j++)
+                (*terreno).mat[i][j] = Linha[j];
+        }
         i++;
     }
     fclose(arq);
-    procuraPosHeroi(terreno,&hero,poderhero,qtpk);
-    procuraPosBoss(terreno,&G,poderG,recompensaG);
-    preencheMonstro(&U,poderU, recompensaU);
-    preencheMonstro(&T,poderT, recompensaT);
-    preencheMonstro(&S,poderS, recompensaS);
-    preencheMonstro(&B,poderB, recompensaB);
-    printf("Força: %d | Recompensa: %d\n",U->forca,U->recompensa);
-    
-    
+    procuraPosHeroi(terreno, &hero, poderhero, qtpk);
+    procuraPosBoss(terreno, &G, poderG, recompensaG);
+    preencheMonstro(&U, poderU, recompensaU);
+    preencheMonstro(&T, poderT, recompensaT);
+    preencheMonstro(&S, poderS, recompensaS);
+    preencheMonstro(&B, poderB, recompensaB);
+    printf("Força: %d | Recompensa: %d\n", U->forca, U->recompensa);
+
     desalocaHeroi(&hero);
     desalocaMonstro(&U);
     desalocaMonstro(&T);
@@ -98,33 +98,44 @@ void leArqv()
     desalocaMonstro(&B);
     desalocaBoss(&G);
     desalocaMapa(&terreno);
+
+    close(arq);
 }
 
-void procuraPosHeroi(Apmapa terreno,Apheroi *hero,int power, int pk){
-    int i,j;
-    for (i=0;i<terreno->tamanhox;i++) {
-        for (j=0;j<terreno->tamanhoy;j++) {
-            if (terreno->mat[i][j] == '@'){
-                preencheHeroi(hero,power,pk,i,j);
+void procuraPosHeroi(Apmapa terreno, Apheroi *hero, int power, int pk)
+{
+    int i, j;
+    for (i = 0; i < terreno->tamanhox; i++)
+    {
+        for (j = 0; j < terreno->tamanhoy; j++)
+        {
+            if (terreno->mat[i][j] == '@')
+            {
+                preencheHeroi(hero, power, pk, i, j);
                 return;
             }
-        }   
+        }
     }
 }
 
-void procuraPosBoss(Apmapa terreno,Apguiygas *boss,int power, int recompensa){
-    int i,j;
-        for (i=0;i<terreno->tamanhox;i++) {
-            for (j=0;j<terreno->tamanhoy;j++) {
-                if (terreno->mat[i][j] == 'G'){
-                    preencheBoss(boss,power,recompensa,i,j);
-                    return;
+void procuraPosBoss(Apmapa terreno, Apguiygas *boss, int power, int recompensa)
+{
+    int i, j;
+    for (i = 0; i < terreno->tamanhox; i++)
+    {
+        for (j = 0; j < terreno->tamanhoy; j++)
+        {
+            if (terreno->mat[i][j] == 'G')
+            {
+                preencheBoss(boss, power, recompensa, i, j);
+                return;
             }
-        }   
+        }
     }
 }
 
-void desalocaMapa(Apmapa* terreno) {
+void desalocaMapa(Apmapa *terreno)
+{
     free((*terreno)->mat);
     free(*terreno);
 }

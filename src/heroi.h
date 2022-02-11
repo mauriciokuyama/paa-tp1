@@ -8,10 +8,9 @@ typedef struct Heroi
     int poder;
     int qtPk;
     int atualx, atualy;
-}heroi;
+} heroi;
 
-
-
-void inicializaHeroi(Apheroi* hero);
-void preencheHeroi(Apheroi* hero, int power, int pk,int posx, int posy);
-void desalocaHeroi(Apheroi* hero);
+void inicializaHeroi(Apheroi *hero);
+void preencheHeroi(Apheroi *hero, int power, int pk, int posx, int posy);
+void movimentaHeroi(Apheroi *hero, Apmapa terreno);
+void desalocaHeroi(Apheroi *hero);
