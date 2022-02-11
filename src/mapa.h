@@ -4,6 +4,7 @@
 
 #include "heroi.c"
 #include "guiygas.c"
+#include "monstros.c"
 
 typedef struct Mapa *Apmapa;
 

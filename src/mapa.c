@@ -43,7 +43,7 @@ void leArqv()
     //  U, T, S, B e G.
     Apmapa terreno;
     Apheroi hero;
-    //Apmonstro U, T, S, B;
+    ApMonstro U, T, S, B;
     Apguiygas G;
     int poderhero, qtpk, poderU, recompensaU, poderT, recompensaT, poderS, recompensaS, poderB,
         recompensaB, poderG, recompensaG,mapax,mapay;
@@ -61,10 +61,10 @@ void leArqv()
     fscanf(arq, "%d %d", &poderB, &recompensaB);
     fscanf(arq, "%d %d", &poderG, &recompensaG);
     inicializaHeroi(&hero);
-    // inicializaMonstro(&U);
-    // inicializaMonstro(&T);
-    // inicializaMonstro(&S);
-    // inicializaMonstro(&B);
+    inicializaMonstro(&U);
+    inicializaMonstro(&T);
+    inicializaMonstro(&S);
+    inicializaMonstro(&B);
     inicializaBoss(&G);
     fscanf(arq, "%d %d", &mapax, &mapay);
     inicializaMapa(&terreno);
@@ -84,11 +84,18 @@ void leArqv()
     fclose(arq);
     procuraPosHeroi(terreno,&hero,poderhero,qtpk);
     procuraPosBoss(terreno,&G,poderG,recompensaG);
+    preencheMonstro(&U,poderU, recompensaU);
+    preencheMonstro(&U,poderT, recompensaT);
+    preencheMonstro(&U,poderS, recompensaS);
+    preencheMonstro(&U,poderB, recompensaB);
     printf("%d %d %d %d\n",G->forca,G->recompensa,(G->posx+1),(G->posy+1));
     
     
     desalocaHeroi(&hero);
-    //desalocaMonstro();
+    desalocaMonstro(&U);
+    desalocaMonstro(&T);
+    desalocaMonstro(&S);
+    desalocaMonstro(&B);
     desalocaBoss(&G);
     desalocaMapa(&terreno);
 }
