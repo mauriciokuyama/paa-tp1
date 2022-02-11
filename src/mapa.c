@@ -85,10 +85,10 @@ void leArqv()
     procuraPosHeroi(terreno,&hero,poderhero,qtpk);
     procuraPosBoss(terreno,&G,poderG,recompensaG);
     preencheMonstro(&U,poderU, recompensaU);
-    preencheMonstro(&U,poderT, recompensaT);
-    preencheMonstro(&U,poderS, recompensaS);
-    preencheMonstro(&U,poderB, recompensaB);
-    printf("%d %d %d %d\n",G->forca,G->recompensa,(G->posx+1),(G->posy+1));
+    preencheMonstro(&T,poderT, recompensaT);
+    preencheMonstro(&S,poderS, recompensaS);
+    preencheMonstro(&B,poderB, recompensaB);
+    printf("Força: %d | Recompensa: %d\n",U->forca,U->recompensa);
     
     
     desalocaHeroi(&hero);
