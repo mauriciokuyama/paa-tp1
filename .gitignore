@@ -1,4 +1,5 @@
 
 src/teste
-main
+src/main
 *.exe
+/build/

@@ -1,7 +1,9 @@
-#include "mapa.c"
+#include "guiygas.h"
+#include "heroi.h"
+#include "mapa.h"
+#include "monstros.h"
 
-int main()
-{
+int main() {
     // Apmapa teste;
     // int tamanhox, tamanhoy;
     // tamanhox = 10;
@@ -18,6 +20,7 @@ int main()
     // inicializaHeroi(&heroteste);
     // preencheHeroi(&heroteste,poder,pk,posx,posy);
     // printf("%d,%d,%d,%d\n",(*heroteste).poder,(*heroteste).qtPk,(*heroteste).atualx,(*heroteste).atualy);
+
     leArqv();
     return 0;
 }

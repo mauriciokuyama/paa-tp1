@@ -1,12 +1,13 @@
-#include <stdlib.h>
+#ifndef GUIYGAS_H
+#define GUIYGAS_H
+
 #include <stdio.h>
 
-typedef struct Guiygas *Apguiygas;
-typedef struct Guiygas
-{
+typedef struct Guiygas {
     int forca, recompensa, posx, posy;
 } guiygas;
 
-void inicializaBoss(Apguiygas *boss);
-void preencheBoss(Apguiygas *boss, int forca, int recompensa, int posx, int posy);
-void desalocaBoss(Apguiygas *boss);
+void inicializaBoss(guiygas *boss);
+void preencheBoss(guiygas *boss, int forca, int recompensa, int posx, int posy);
+
+#endif

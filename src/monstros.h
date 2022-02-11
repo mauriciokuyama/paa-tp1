@@ -1,14 +1,14 @@
-#include <stdlib.h>
+#ifndef MONSTROS_H
+#define MONSTROS_H
+
 #include <stdio.h>
+#include <stdlib.h>
 
-
-typedef struct Monstro *ApMonstro;
-
-typedef struct Monstro
-{
+typedef struct Monstro {
     int forca, recompensa;
 } monstro;
 
-void inicializaMonstro(ApMonstro *Monster);
-void preencheMonstro(ApMonstro *Monster, int forca, int recompensa);
-void desalocaMonstro(ApMonstro *Monster);
+void inicializaMonstro(monstro *Monster);
+void preencheMonstro(monstro *Monster, int forca, int recompensa);
+
+#endif

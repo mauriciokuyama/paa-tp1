@@ -1,23 +1,24 @@
-#include <stdlib.h>
+#ifndef MAPA_H
+#define MAPA_H
+
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
-#include "heroi.c"
-#include "guiygas.c"
-#include "monstros.c"
+#include "guiygas.h"
+#include "heroi.h"
+#include "monstros.h"
 
-typedef struct Mapa *Apmapa;
-
-typedef struct Mapa
-{
+typedef struct Mapa {
     char **mat;
     int tamanhox, tamanhoy;
 } mapa;
 
 void leArqv();
-void inicializaMapa(Apmapa *terreno);
-void fazMapaVazio(Apmapa *terreno, int x, int y);
-void imprimeMapa(Apmapa terreno);
-void procuraPosHeroi(Apmapa terreno, Apheroi *hero, int power, int pk);
-void procuraPosBoss(Apmapa terreno, Apguiygas *boss, int power, int recompensa);
-void desalocaMapa(Apmapa *terreno);
+void inicializaMapaVazio(mapa *terreno, int x, int y);
+void imprimeMapa(mapa terreno);
+void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk);
+void movimentaHeroi(heroi *hero, mapa terreno);
+void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa);
+void desalocaMapa(mapa terreno);
+
+#endif
