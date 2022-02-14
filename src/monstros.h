@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Monstro {
+typedef struct Monstro
+{
     int forca, recompensa;
 } monstro;
 

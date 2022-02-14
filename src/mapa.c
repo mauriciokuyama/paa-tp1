@@ -90,7 +90,8 @@ void leArqv()
     preencheMonstro(&T, poderT, recompensaT);
     preencheMonstro(&S, poderS, recompensaS);
     preencheMonstro(&B, poderB, recompensaB);
-    printf("Força: %d | Recompensa: %d\n", U.forca, U.recompensa);
+
+    movimentaHeroi(&hero, terreno, U, T, S, B, G);
 
     desalocaMapa(terreno);
 }
@@ -114,7 +115,8 @@ void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk)
 void movimentaHeroi(heroi *hero, mapa terreno, monstro U, monstro T, monstro S, monstro B, guiygas boss)
 {
 
-    int i, j, resultado;
+    int i, j;
+    bool resultado;
     int matrizaux[terreno.tamanhox][terreno.tamanhoy];
     // cima, direita, baixo, esquerda
     int vertical[] = {-1, 0, 1, 0};
@@ -129,26 +131,24 @@ void movimentaHeroi(heroi *hero, mapa terreno, monstro U, monstro T, monstro S, 
     }
     matrizaux[(*hero).atualx][(*hero).atualy] = 1;
     resultado = tentaMoverHeroi(hero, terreno, matrizaux, vertical, horizontal, 2, U, T, S, B, boss);
-    // if (resultado == 1){
-    // printar a matriz aux
-    // }
-    // else{
-    // printar que não tem solução
-    // }
-
-    // x = hero->atualx;
-    // y = hero->atualy;
-
-    // if (x < 0 || x >= terreno.tamanhox || y < 0 || y >= terreno.tamanhoy ||
-    //     terreno.mat[x][y] == '.')
+    // if (resultado == true)
     // {
-    //     return;
+    for (i = 0; i < terreno.tamanhox; i++)
+    {
+        for (j = 0; j < terreno.tamanhoy; j++)
+        {
+            printf("%d ", matrizaux[i][j]);
+        }
+        printf("\n");
+    }
+    //}
+    // else
+    // {
+    //     printf("Nao tem solucao\n");
     // }
-    // hero->atualx = x;
-    // hero->atualy = y;
 }
 
-//VERIFICAR MATRIZAUX[][]
+// VERIFICAR MATRIZAUX[][]
 bool tentaMoverHeroi(heroi *hero, mapa terreno, int matrizaux[terreno.tamanhox][terreno.tamanhoy], int *vertical, int *horizontal, int i,
                      monstro U, monstro T, monstro S, monstro B, guiygas boss)
 {
@@ -162,6 +162,10 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int matrizaux[terreno.tamanhox][
         yn = (*hero).atualy + vertical[m];
         if (xn <= terreno.tamanhox && xn >= 0 && yn <= terreno.tamanhoy && yn >= 0)
         {
+            if (terreno.mat[xn][yn] == 'G' && (*hero).poder >= boss.forca)
+            {
+                return true;
+            }
             if (terreno.mat[xn][yn] != '.' && matrizaux[xn][yn] != 0)
             {
                 if (terreno.mat[xn][yn] == '+' || (terreno.mat[xn][yn] == '-' && vertical[yn] == 0) || (terreno.mat[xn][yn] == '|' && horizontal[xn] == 0))
@@ -183,11 +187,117 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int matrizaux[terreno.tamanhox][
                         }
                     }
                 }
+                if (terreno.mat[xn][yn] == 'U')
+                {
+                    if (heroiGanha(hero, U))
+                    {
+                        (*hero).atualx = xn;
+                        (*hero).atualy = yn;
+                        matrizaux[xn][yn] = i;
+                        if (i < (terreno.tamanhox * terreno.tamanhoy))
+                        {
+                            q1 = tentaMoverHeroi(hero, terreno, matrizaux, vertical, horizontal, i + 1,
+                                                 U, T, S, B, boss);
+                            if (q1 == false)
+                            {
+                                matrizaux[xn][yn] = 0;
+                            }
+                            else
+                            {
+                                q1 = true;
+                            }
+                        }
+                    }
+                }
+                if (terreno.mat[xn][yn] == 'T')
+                {
+                    if (heroiGanha(hero, T))
+                    {
+                        (*hero).atualx = xn;
+                        (*hero).atualy = yn;
+                        matrizaux[xn][yn] = i;
+                        if (i < (terreno.tamanhox * terreno.tamanhoy))
+                        {
+                            q1 = tentaMoverHeroi(hero, terreno, matrizaux, vertical, horizontal, i + 1,
+                                                 U, T, S, B, boss);
+                            if (q1 == false)
+                            {
+                                matrizaux[xn][yn] = 0;
+                            }
+                            else
+                            {
+                                q1 = true;
+                            }
+                        }
+                    }
+                }
+                if (terreno.mat[xn][yn] == 'S')
+                {
+                    if (heroiGanha(hero, S))
+                    {
+                        (*hero).atualx = xn;
+                        (*hero).atualy = yn;
+                        matrizaux[xn][yn] = i;
+                        if (i < (terreno.tamanhox * terreno.tamanhoy))
+                        {
+                            q1 = tentaMoverHeroi(hero, terreno, matrizaux, vertical, horizontal, i + 1,
+                                                 U, T, S, B, boss);
+                            if (q1 == false)
+                            {
+                                matrizaux[xn][yn] = 0;
+                            }
+                            else
+                            {
+                                q1 = true;
+                            }
+                        }
+                    }
+                }
+                if (terreno.mat[xn][yn] == 'B')
+                {
+                    if (heroiGanha(hero, B))
+                    {
+                        (*hero).atualx = xn;
+                        (*hero).atualy = yn;
+                        matrizaux[xn][yn] = i;
+                        if (i < (terreno.tamanhox * terreno.tamanhoy))
+                        {
+                            q1 = tentaMoverHeroi(hero, terreno, matrizaux, vertical, horizontal, i + 1,
+                                                 U, T, S, B, boss);
+                            if (q1 == false)
+                            {
+                                matrizaux[xn][yn] = 0;
+                            }
+                            else
+                            {
+                                q1 = true;
+                            }
+                        }
+                    }
+                }
             }
         }
         m++;
     } while (q1 || (m == 3));
     return q1;
+}
+bool heroiGanha(heroi *hero, monstro Monster)
+{
+    if ((*hero).poder >= Monster.forca)
+    {
+        (*hero).poder += Monster.recompensa;
+        return true;
+    }
+    else if ((*hero).qtPk > 0)
+    {
+        (*hero).poder += Monster.recompensa;
+        (*hero).qtPk--;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa)

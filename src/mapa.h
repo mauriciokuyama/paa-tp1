@@ -22,7 +22,7 @@ void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk);
 void movimentaHeroi(heroi *hero, mapa terreno, monstro U, monstro T, monstro S, monstro B, guiygas boss);
 bool tentaMoverHeroi(heroi *hero, mapa terreno, int matrizaux[terreno.tamanhox][terreno.tamanhoy], int *vertical, int *horizontal, int i,
                      monstro U, monstro T, monstro S, monstro B, guiygas boss);
-bool heroiGanha(heroi hero, monstro Monster, monstro U, monstro T, monstro S, monstro B, guiygas boss);
+bool heroiGanha(heroi *hero, monstro Monster);
 void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa);
 void desalocaMapa(mapa terreno);
 
