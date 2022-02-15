@@ -5,6 +5,7 @@ SRC_DIR := src
 OBJ_DIR := $(BUILD_DIR)/.build
 BIN_PATH := $(BUILD_DIR)/$(BIN_NAME)
 WFLAGS := -Wall \
+		  -Wextra \
 		  -pedantic
 CFLAGS := $(WFLAGS) \
 		  -std=c99 \
