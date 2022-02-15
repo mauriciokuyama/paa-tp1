@@ -9,7 +9,6 @@ WFLAGS := -Wall \
 		  -pedantic
 CFLAGS := $(WFLAGS) \
 		  -std=c99 \
-		  -O2 \
 		  -g3
 LDFLAGS :=
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.c))
