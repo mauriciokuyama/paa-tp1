@@ -13,16 +13,16 @@ typedef struct Mapa {
     char **mat;
     int **matrizaux;
     int tamanhox, tamanhoy;
+    monstro U, T, S, B;
+    guiygas boss;
 } mapa;
 
 void leArqv();
 void inicializaMapaVazio(mapa *terreno, int x, int y);
 void imprimeMapa(mapa terreno);
 void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk);
-void movimentaHeroi(heroi *hero, mapa terreno, monstro U, monstro T, monstro S, monstro B,
-                    guiygas boss);
-bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i, monstro U,
-                     monstro T, monstro S, monstro B, guiygas boss);
+void movimentaHeroi(heroi *hero, mapa terreno);
+bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i);
 bool heroiGanha(heroi *hero, monstro Monster);
 void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa);
 void desalocaMapa(mapa terreno);
