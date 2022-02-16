@@ -149,15 +149,15 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
     m = 0;
     do {
         q1 = false;
-        xn = hero->atualx + horizontal[m];
-        yn = hero->atualy + vertical[m];
-        if (xn <= terreno.tamanhox && xn >= 0 && yn <= terreno.tamanhoy && yn >= 0) {
+        xn = hero->atualx + vertical[m];
+        yn = hero->atualy + horizontal[m];
+        if (xn < terreno.tamanhox && xn >= 0 && yn < terreno.tamanhoy && yn >= 0) {
             if (terreno.mat[xn][yn] == 'G' && hero->poder >= terreno.boss.forca) {
                 return true;
             }
-            if (terreno.mat[xn][yn] != '.' && terreno.matrizaux[xn][yn] != 0) {
-                if (terreno.mat[xn][yn] == '+' ||
-                    (terreno.mat[xn][yn] == '-' && vertical[yn] == 0) ||
+            if (terreno.mat[xn][yn] != '.' && terreno.mat[xn][yn] != '+' &&
+                terreno.matrizaux[xn][yn] == 0) {
+                if ((terreno.mat[xn][yn] == '-' && vertical[yn] == 0) ||
                     (terreno.mat[xn][yn] == '|' && horizontal[xn] == 0)) {
                     hero->atualx = xn;
                     hero->atualy = yn;
@@ -201,6 +201,8 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
                         }
                     }
                 }
+            }
+            if (terreno.mat[xn][yn] == '+') {
             }
         }
         m++;
