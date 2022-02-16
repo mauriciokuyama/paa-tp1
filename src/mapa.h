@@ -7,11 +7,12 @@
 
 #include "guiygas.h"
 #include "heroi.h"
+#include "item.h"
 #include "monstros.h"
 
 typedef struct Mapa {
     char **mat;
-    int **matrizaux;
+    item **matrizaux;
     int tamanhox, tamanhoy;
     monstro U, T, S, B;
     guiygas boss;
