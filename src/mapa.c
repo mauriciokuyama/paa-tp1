@@ -5,27 +5,34 @@
 #include "mapa.h"
 #include "monstros.h"
 
-void inicializaMapaVazio(mapa *terreno, int x, int y) {
+void inicializaMapaVazio(mapa *terreno, int x, int y)
+{
     int i, j;
 
     terreno->mat = malloc(x * sizeof(char *));
-    for (i = 0; i < x; i++) {
+    for (i = 0; i < x; i++)
+    {
         terreno->mat[i] = malloc(y * sizeof(char));
     }
     // preenchendo a matriz com  .
-    for (i = 0; i < x; i++) {
-        for (j = 0; j < y; j++) {
+    for (i = 0; i < x; i++)
+    {
+        for (j = 0; j < y; j++)
+        {
             terreno->mat[i][j] = '.';
         }
     }
 
     // alocando matriz inicializada com 0
     terreno->matrizaux = malloc(x * sizeof(item *));
-    for (i = 0; i < x; i++) {
+    for (i = 0; i < x; i++)
+    {
         terreno->matrizaux[i] = malloc(y * sizeof(item));
     }
-    for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
+    for (int i = 0; i < x; i++)
+    {
+        for (int j = 0; j < y; j++)
+        {
             inicializaItem(&terreno->matrizaux[i][j]);
         }
     }
@@ -34,17 +41,21 @@ void inicializaMapaVazio(mapa *terreno, int x, int y) {
     terreno->tamanhoy = y;
 }
 
-void imprimeMapa(mapa terreno) {
+void imprimeMapa(mapa terreno)
+{
     int i, j;
-    for (i = 0; i < terreno.tamanhox; i++) {
-        for (j = 0; j < terreno.tamanhoy; j++) {
+    for (i = 0; i < terreno.tamanhox; i++)
+    {
+        for (j = 0; j < terreno.tamanhoy; j++)
+        {
             printf("%c", terreno.mat[i][j]);
         }
         printf("\n");
     }
 }
 
-void leArqv() {
+void leArqv()
+{
     FILE *arq;
     char Linha[100];
     char *result;
@@ -58,7 +69,8 @@ void leArqv() {
     int i, j;
     arq = fopen("data/mapa1.txt", "rt");
 
-    if (!feof(arq)) {
+    if (!feof(arq))
+    {
         fscanf(arq, "%d %d", &poderhero, &qtpk);
         fscanf(arq, "%d %d", &poderU, &recompensaU);
         fscanf(arq, "%d %d", &poderT, &recompensaT);
@@ -73,16 +85,20 @@ void leArqv() {
         inicializaBoss(&G);
         fscanf(arq, "%d %d", &mapax, &mapay);
         inicializaMapaVazio(&terreno, mapax, mapay);
-    } else {
+    }
+    else
+    {
         printf("Problemas na abertura do arquivo\n");
         return;
     }
 
     i = 0;
     fgets(Linha, 100, arq);
-    while (!feof(arq)) {
+    while (!feof(arq))
+    {
         result = fgets(Linha, 100, arq);
-        if (result) {
+        if (result)
+        {
             for (j = 0; j < mapay; j++)
                 terreno.mat[i][j] = Linha[j];
         }
@@ -108,11 +124,15 @@ void leArqv() {
     desalocaMapa(terreno);
 }
 
-void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk) {
+void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk)
+{
     int i, j;
-    for (i = 0; i < terreno.tamanhox; i++) {
-        for (j = 0; j < terreno.tamanhoy; j++) {
-            if (terreno.mat[i][j] == '@') {
+    for (i = 0; i < terreno.tamanhox; i++)
+    {
+        for (j = 0; j < terreno.tamanhoy; j++)
+        {
+            if (terreno.mat[i][j] == '@')
+            {
                 preencheHeroi(hero, power, pk, i, j);
                 return;
             }
@@ -120,7 +140,8 @@ void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk) {
     }
 }
 
-void movimentaHeroi(heroi *hero, mapa terreno) {
+void movimentaHeroi(heroi *hero, mapa terreno)
+{
 
     int i, j;
     bool resultado;
@@ -128,55 +149,101 @@ void movimentaHeroi(heroi *hero, mapa terreno) {
     int vertical[] = {-1, 0, 1, 0};
     int horizontal[] = {0, 1, 0, -1};
     // preenche a matriz aux com 0
-    for (i = 0; i < terreno.tamanhox; i++) {
-        for (j = 0; j < terreno.tamanhoy; j++) {
+    for (i = 0; i < terreno.tamanhox; i++)
+    {
+        for (j = 0; j < terreno.tamanhoy; j++)
+        {
             terreno.matrizaux[i][j].id = 0;
         }
     }
     terreno.matrizaux[hero->atualx][hero->atualy].id = 1;
     resultado = tentaMoverHeroi(hero, terreno, vertical, horizontal, 2);
-    if (resultado == true) {
-        for (i = 0; i < terreno.tamanhox; i++) {
-            for (j = 0; j < terreno.tamanhoy; j++) {
+    if (resultado == true)
+    {
+        for (i = 0; i < terreno.tamanhox; i++)
+        {
+            for (j = 0; j < terreno.tamanhoy; j++)
+            {
                 printf("%02d ", terreno.matrizaux[i][j].id);
             }
             printf("\n");
         }
-    } else {
+    }
+    else
+    {
         printf("Nao tem solucao\n");
-        for (i = 0; i < terreno.tamanhox; i++) {
-            for (j = 0; j < terreno.tamanhoy; j++) {
+        for (i = 0; i < terreno.tamanhox; i++)
+        {
+            for (j = 0; j < terreno.tamanhoy; j++)
+            {
                 printf("%02d ", terreno.matrizaux[i][j].id);
             }
             printf("\n");
         }
     }
 }
-
+void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn, int yn, int m)
+{
+    if (m == 0 && terreno->matrizaux[xn][yn].B == false)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].C = true;
+        terreno->matrizaux[xn][yn].B = true;
+        *tentarMover = true;
+    }
+    else if (m == 1 && terreno->matrizaux[xn][yn].E == false)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].D = true;
+        terreno->matrizaux[xn][yn].E = true;
+        *tentarMover = true;
+    }
+    else if (m == 2 && terreno->matrizaux[xn][yn].C == false)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].B = true;
+        terreno->matrizaux[xn][yn].C = true;
+        *tentarMover = true;
+    }
+    else if (m == 3 && terreno->matrizaux[xn][yn].D == false)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].E = true;
+        terreno->matrizaux[xn][yn].D = true;
+        *tentarMover = true;
+    }
+}
 // VERIFICAR MATRIZAUX[][]
-bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i) {
-    int xn, yn, m, xant, yant;
+bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i)
+{
+    int xn, yn, m, xant, yant, poderant;
     bool q1;
     bool tentarMover;
     m = 0;
-    do {
+    do
+    {
         q1 = false;
         tentarMover = false;
         xn = hero->atualx + vertical[m];
         yn = hero->atualy + horizontal[m];
         xant = hero->atualx;
         yant = hero->atualy;
-        if (xn < terreno.tamanhox && xn >= 0 && yn < terreno.tamanhoy && yn >= 0) {
-            if (terreno.mat[xn][yn] == 'G' && hero->poder >= terreno.boss.forca) {
+        poderant = hero->poder;
+        if (xn < terreno.tamanhox && xn >= 0 && yn < terreno.tamanhoy && yn >= 0)
+        {
+            if (terreno.mat[xn][yn] == 'G' && hero->poder >= terreno.boss.forca)
+            {
                 return true;
-            } else if (terreno.mat[xn][yn] != '.' && terreno.mat[xn][yn] != '+' &&
-                       terreno.matrizaux[xn][yn].id == 0) {
-                if ((terreno.mat[xn][yn] == '-' && vertical[m] == 0) ||
-                    (terreno.mat[xn][yn] == '|' && horizontal[m] == 0)) {
-                    tentarMover = true;
-                } else {
+            }
+            else if (terreno.mat[xn][yn] != '.' && terreno.mat[xn][yn] != '+' &&
+                     terreno.matrizaux[xn][yn].id == 0)
+            {
+                if ((terreno.mat[xn][yn] == '-' && vertical[m] == 0 && (terreno.matrizaux[xn][yn].E == false || terreno.matrizaux[xn][yn].D == false)) ||
+                    (terreno.mat[xn][yn] == '|' && horizontal[m] == 0 && (terreno.matrizaux[xn][yn].E == false || terreno.matrizaux[xn][yn].D == false)))
+                {
+                    bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+                }
+                else
+                {
                     monstro monster;
-                    switch (terreno.mat[xn][yn]) {
+                    switch (terreno.mat[xn][yn])
+                    {
                     case 'U':
                         monster = terreno.U;
                         break;
@@ -191,39 +258,40 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
                         break;
                     }
 
-                    if (heroiGanha(hero, monster)) {
-                        tentarMover = true;
+                    if (heroiGanha(hero, monster))
+                    {
+                        bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
                     }
                 }
             }
             // vertical[] = {-1, 0, 1, 0};
             // horizontal[] = {0, 1, 0, -1};
-            else if (terreno.mat[xn][yn] == '+') {
-                if (m == 0 && terreno.matrizaux[xn][yn].B == false) {
-                    terreno.matrizaux[hero->atualx][hero->atualy].C = true;
-                    tentarMover = true;
-                } else if (m == 1 && terreno.matrizaux[xn][yn].E == false) {
-                    terreno.matrizaux[hero->atualx][hero->atualy].D = true;
-                    tentarMover = true;
-                } else if (m == 2 && terreno.matrizaux[xn][yn].C == false) {
-                    terreno.matrizaux[hero->atualx][hero->atualy].B = true;
-                    tentarMover = true;
-                } else if (m == 2 && terreno.matrizaux[xn][yn].D == false) {
-                    terreno.matrizaux[hero->atualx][hero->atualy].E = true;
-                    tentarMover = true;
-                }
+            else if (terreno.mat[xn][yn] == '+')
+            {
+                bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
             }
-
-            if (tentarMover) {
+            if (tentarMover)
+            {
                 hero->atualx = xn;
                 hero->atualy = yn;
-                terreno.matrizaux[xn][yn].id = i;
-                if (i < (terreno.tamanhox * terreno.tamanhoy)) {
+                if (terreno.matrizaux[xn][yn].id == 0)
+                {
+                    terreno.matrizaux[xn][yn].id = i;
+                }
+                hero->avanca = true;
+                if (i < (terreno.tamanhox * terreno.tamanhoy))
+                {
                     q1 = tentaMoverHeroi(hero, terreno, vertical, horizontal, i + 1);
-                    if (q1 == false) {
-                        terreno.matrizaux[xn][yn].id = 0;
+                    if (q1 == false)
+                    {
                         hero->atualx = xant;
                         hero->atualy = yant;
+                        hero->poder = poderant;
+                        hero->avanca = false;
+                        if (terreno.mat[xn][yn] != '+')
+                        {
+                            terreno.matrizaux[xn][yn].id = 0;
+                        }
                     }
                 }
             }
@@ -233,24 +301,34 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
     return q1;
 }
 
-bool heroiGanha(heroi *hero, monstro Monster) {
-    if (hero->poder >= Monster.forca) {
+bool heroiGanha(heroi *hero, monstro Monster)
+{
+    if (hero->poder >= Monster.forca)
+    {
         hero->poder += Monster.recompensa;
         return true;
-    } else if (hero->qtPk > 0) {
+    }
+    else if (hero->qtPk > 0)
+    {
         hero->poder += Monster.recompensa;
         hero->qtPk--;
         return true;
-    } else {
+    }
+    else
+    {
         return false;
     }
 }
 
-void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa) {
+void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa)
+{
     int i, j;
-    for (i = 0; i < terreno.tamanhox; i++) {
-        for (j = 0; j < terreno.tamanhoy; j++) {
-            if (terreno.mat[i][j] == 'G') {
+    for (i = 0; i < terreno.tamanhox; i++)
+    {
+        for (j = 0; j < terreno.tamanhoy; j++)
+        {
+            if (terreno.mat[i][j] == 'G')
+            {
                 preencheBoss(boss, power, recompensa, i, j);
                 return;
             }
@@ -258,13 +336,16 @@ void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa) {
     }
 }
 
-void desalocaMapa(mapa terreno) {
-    for (int i = 0; i < terreno.tamanhox; i++) {
+void desalocaMapa(mapa terreno)
+{
+    for (int i = 0; i < terreno.tamanhox; i++)
+    {
         free(terreno.mat[i]);
     }
     free(terreno.mat);
 
-    for (int i = 0; i < terreno.tamanhox; i++) {
+    for (int i = 0; i < terreno.tamanhox; i++)
+    {
         free(terreno.matrizaux[i]);
     }
     free(terreno.matrizaux);

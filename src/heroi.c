@@ -5,6 +5,7 @@ void inicializaHeroi(heroi *hero) {
     hero->atualy = -1;
     hero->poder = 0;
     hero->qtPk = 0;
+    hero->avanca = true;
 }
 
 void preencheHeroi(heroi *hero, int power, int pk, int posx, int posy) {
