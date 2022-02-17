@@ -235,7 +235,7 @@ void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m)
 // VERIFICAR MATRIZAUX[][]
 bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i)
 {
-    printf("i: %d / linha: %d/coluna: %d/poder: %d/pk: %d\n", i, hero->atualx, hero->atualy, hero->poder, hero->qtPk);
+    printf("i: %d / linha: %d /coluna: %d /poder: %d /pk: %d\n", i, hero->atualx, hero->atualy, hero->poder, hero->qtPk);
     int xn, yn, m, xant, yant, poderant, pkant;
     bool q1;
     bool tentarMover;
