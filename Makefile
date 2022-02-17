@@ -27,11 +27,24 @@ $(OBJS): $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR):
+ifeq ($(OS),Windows_NT)
+	mkdir $@
+else
 	mkdir -p $@
+endif
 
 $(OBJ_DIR):
+ifeq ($(OS),Windows_NT)
+	mkdir $@
+else
 	mkdir -p $@
+endif
 
 .PHONY: clean
 clean:
+ifeq ($(OS),Windows_NT)
+	del /s /q $(BUILD_DIR)
+else
 	rm -rf $(BUILD_DIR)
+endif
+	
