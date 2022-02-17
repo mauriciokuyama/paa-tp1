@@ -67,7 +67,7 @@ void leArqv()
     int poderhero, qtpk, poderU, recompensaU, poderT, recompensaT, poderS, recompensaS, poderB,
         recompensaB, poderG, recompensaG, mapax, mapay;
     int i, j;
-    arq = fopen("data/mapa1.txt", "rt");
+    arq = fopen("data/mapa4.txt", "rt");
 
     if (!feof(arq))
     {
@@ -209,10 +209,34 @@ void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn, int yn
         *tentarMover = true;
     }
 }
+void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m)
+{
+    if (m == 0)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].B = false;
+        terreno->matrizaux[xn][yn].C = false;
+    }
+    else if (m == 1)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].E = false;
+        terreno->matrizaux[xn][yn].D = false;
+    }
+    else if (m == 2)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].C = false;
+        terreno->matrizaux[xn][yn].B = false;
+    }
+    else if (m == 3)
+    {
+        terreno->matrizaux[hero.atualx][hero.atualy].D = false;
+        terreno->matrizaux[xn][yn].E = false;
+    }
+}
 // VERIFICAR MATRIZAUX[][]
 bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i)
 {
-    int xn, yn, m, xant, yant, poderant;
+    printf("i hx hy poder pk %d %d %d %d %d\n", i, hero->atualx, hero->atualy, hero->poder, hero->qtPk);
+    int xn, yn, m, xant, yant, poderant, pkant;
     bool q1;
     bool tentarMover;
     m = 0;
@@ -225,50 +249,54 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
         xant = hero->atualx;
         yant = hero->atualy;
         poderant = hero->poder;
+        pkant = hero->qtPk;
         if (xn < terreno.tamanhox && xn >= 0 && yn < terreno.tamanhoy && yn >= 0)
         {
-            if (terreno.mat[xn][yn] == 'G' && hero->poder >= terreno.boss.forca)
+            if (terreno.mat[xn][yn] == 'G')
             {
-                return true;
-            }
-            else if (terreno.mat[xn][yn] != '.' && terreno.mat[xn][yn] != '+' &&
-                     terreno.matrizaux[xn][yn].id == 0)
-            {
-                if ((terreno.mat[xn][yn] == '-' && vertical[m] == 0 && (terreno.matrizaux[xn][yn].E == false || terreno.matrizaux[xn][yn].D == false)) ||
-                    (terreno.mat[xn][yn] == '|' && horizontal[m] == 0 && (terreno.matrizaux[xn][yn].E == false || terreno.matrizaux[xn][yn].D == false)))
+                printf("i poder m %d %d %d\n", i, hero->poder, m);
+                if (hero->poder >= terreno.boss.forca)
                 {
-                    bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
-                }
-                else
-                {
-                    monstro monster;
-                    switch (terreno.mat[xn][yn])
-                    {
-                    case 'U':
-                        monster = terreno.U;
-                        break;
-                    case 'T':
-                        monster = terreno.T;
-                        break;
-                    case 'S':
-                        monster = terreno.S;
-                        break;
-                    case 'B':
-                        monster = terreno.B;
-                        break;
-                    }
-
-                    if (heroiGanha(hero, monster))
-                    {
-                        bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
-                    }
+                    return true;
                 }
             }
-            // vertical[] = {-1, 0, 1, 0};
-            // horizontal[] = {0, 1, 0, -1};
-            else if (terreno.mat[xn][yn] == '+')
+            if ((terreno.mat[xn][yn] == '-' && vertical[m] == 0 && (terreno.matrizaux[xn][yn].D == false || terreno.matrizaux[xn][yn].E == false)) && terreno.matrizaux[xn][yn].id == 0)
             {
                 bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+            }
+            else if ((terreno.mat[xn][yn] == '|' && horizontal[m] == 0 && (terreno.matrizaux[xn][yn].C == false || terreno.matrizaux[xn][yn].B == false)))
+                bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+            else if (terreno.mat[xn][yn] == '+')
+                bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+            else
+            {
+                //printf("i xm ym %d %d,%d monstro\n", i, xn, yn);
+                monstro monster;
+                switch (terreno.mat[xn][yn])
+                {
+                case 'U':
+                    monster = terreno.U;
+                    if (heroiGanha(hero, monster))
+                        bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+                    break;
+                case 'T':
+                    monster = terreno.T;
+                    if (heroiGanha(hero, monster))
+                        bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+                    break;
+                case 'S':
+                    monster = terreno.S;
+                    if (heroiGanha(hero, monster))
+                        bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+                    break;
+                case 'B':
+                    monster = terreno.B;
+                    if (heroiGanha(hero, monster))
+                        bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
+                    break;
+                default:
+                    break;
+                }
             }
             if (tentarMover)
             {
@@ -284,9 +312,11 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
                     q1 = tentaMoverHeroi(hero, terreno, vertical, horizontal, i + 1);
                     if (q1 == false)
                     {
+                        desbloqueiaAresta(&terreno, *hero, xant, yant, m);
                         hero->atualx = xant;
                         hero->atualy = yant;
                         hero->poder = poderant;
+                        hero->qtPk = pkant;
                         hero->avanca = false;
                         if (terreno.mat[xn][yn] != '+')
                         {
@@ -306,6 +336,7 @@ bool heroiGanha(heroi *hero, monstro Monster)
     if (hero->poder >= Monster.forca)
     {
         hero->poder += Monster.recompensa;
+        // printf("poder pos mostro %d\n",hero->poder);
         return true;
     }
     else if (hero->qtPk > 0)
