@@ -67,7 +67,7 @@ void leArqv()
     int poderhero, qtpk, poderU, recompensaU, poderT, recompensaT, poderS, recompensaS, poderB,
         recompensaB, poderG, recompensaG, mapax, mapay;
     int i, j;
-    arq = fopen("data/mapa4.txt", "rt");
+    arq = fopen("data/mapa1.txt", "rt");
 
     if (!feof(arq))
     {
