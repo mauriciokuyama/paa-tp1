@@ -21,6 +21,6 @@ int main() {
     // preencheHeroi(&heroteste,poder,pk,posx,posy);
     // printf("%d,%d,%d,%d\n",(*heroteste).poder,(*heroteste).qtPk,(*heroteste).atualx,(*heroteste).atualy);
 
-    leArqv();
+    leArqv("data/mapa1.txt");
     return 0;
 }

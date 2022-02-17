@@ -47,4 +47,3 @@ ifeq ($(OS),Windows_NT)
 else
 	rm -rf $(BUILD_DIR)
 endif
-	
