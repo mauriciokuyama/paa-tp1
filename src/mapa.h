@@ -18,7 +18,7 @@ typedef struct Mapa {
     guiygas boss;
 } mapa;
 
-void leArqv();
+void leArqv(char *path);
 void inicializaMapaVazio(mapa *terreno, int x, int y);
 void imprimeMapa(mapa terreno);
 void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk);
