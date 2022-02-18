@@ -141,20 +141,30 @@ Linha: 4, Coluna: 2;
 Linha: 5, Coluna: 2;
 Linha: 6, Coluna: 2; P: 30, K: 1
 */
-static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical,int *horizontal, int iter) {
-    int m;
+static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, int *horizontal,
+                         int iter) {
+    int m,auxx,auxy;
     m = 0;
-    do {
-        x += horizontal[m];
-        y += vertical[m];
-        if (terreno.matrizaux[x][y].id == (iter+1)){
-            printf("Linha: %d, Coluna: %d;",x+1,y+1);
-            caminhoFinal(terreno, hero, x, y, vertical, horizontal,iter+1);
-        }
 
+    do {
+        auxx = x;
+        auxy = y;
+        x += vertical[m];
+        y += horizontal[m];
+        if (x < terreno.tamanhox && x >= 0 && y < terreno.tamanhoy && y >= 0 &&
+            terreno.mat[x][y] != 'G') {
+
+            if (terreno.matrizaux[x][y].id == (iter + 1)) {
+
+                printf("Linha: %d, Coluna: %d;", x + 1, y + 1);
+                caminhoFinal(terreno, hero, x, y, vertical, horizontal, iter + 1);
+                return;
+            }
+        }
+        x = auxx;
+        y = auxy;
         m++;
-    }
-    while(terreno.mat[x][y] != 'G' && (m < 4));
+    } while (m < 4);
 }
 
 void movimentaHeroi(heroi *hero, mapa terreno) {
@@ -175,7 +185,7 @@ void movimentaHeroi(heroi *hero, mapa terreno) {
     terreno.matrizaux[hero->atualx][hero->atualy].id = 1;
     resultado = tentaMoverHeroi(hero, terreno, vertical, horizontal, 2);
     if (resultado == true) {
-        caminhoFinal(terreno, *hero, posicaoinicialx, posicaoinicialy,vertical, horizontal,1);
+        caminhoFinal(terreno, *hero, posicaoinicialx, posicaoinicialy, vertical, horizontal, 1);
     } else {
         printf("Apesar de todas as tentativas, Ness falha em derrotar Giygas!\n");
     }
@@ -234,8 +244,8 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
         pkant = hero->qtPk;
         if (xn < terreno.tamanhox && xn >= 0 && yn < terreno.tamanhoy && yn >= 0) {
             if (terreno.mat[xn][yn] == 'G') {
-                printf("O heroi encontrou o monstro final. Seu poder no momento: %d \n",
-                       hero->poder);
+                // printf("O heroi encontrou o monstro final. Seu poder no momento: %d \n",
+                // hero->poder);
                 if (hero->poder >= terreno.boss.forca) {
                     printf("Guiygas foi derrotado.\n");
                     return true;
