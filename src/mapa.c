@@ -73,17 +73,17 @@ void leArqv(char *path)
     if (!feof(arq))
     {
         fscanf(arq, "%d %d", &poderhero, &qtpk);
-        printf("O heroi inicia sua jornada com %d de poder e com %d pk's.\n",poderhero,qtpk);
+        printf(" -> O heroi inicia sua jornada com %d de poder e com %d pk's.\n",poderhero,qtpk);
         fscanf(arq, "%d %d", &poderU, &recompensaU);
-        printf("O monstro U tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderU,recompensaU);
+        printf(" -> O monstro U tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderU,recompensaU);
         fscanf(arq, "%d %d", &poderT, &recompensaT);
-        printf("O monstro T tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderT,recompensaT);
+        printf(" -> O monstro T tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderT,recompensaT);
         fscanf(arq, "%d %d", &poderS, &recompensaS);
-        printf("O monstro S tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderS,recompensaS);
+        printf(" -> O monstro S tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderS,recompensaS);
         fscanf(arq, "%d %d", &poderB, &recompensaB);
-        printf("O monstro B tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderB,recompensaB);
+        printf(" -> O monstro B tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderB,recompensaB);
         fscanf(arq, "%d %d", &poderG, &recompensaG);
-        printf("O chefe final, Guiygas, eh conhecido por possuir %d de poder\n",poderG);
+        printf(" -> O chefe final, Guiygas, eh conhecido por possuir %d de poder\n",poderG);
         inicializaHeroi(&hero);
         inicializaMonstro(&U);
         inicializaMonstro(&T);
@@ -126,7 +126,9 @@ void leArqv(char *path)
     terreno.T = T;
     terreno.S = S;
     terreno.B = B;
-
+    printf(" -> Mapa de entrada:\n");
+    imprimeMapa(terreno);
+    printf("------------------------------------\n");
     movimentaHeroi(&hero, terreno);
 
     desalocaMapa(terreno);
