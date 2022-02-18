@@ -17,14 +17,15 @@ OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.c))
 all: $(BIN_PATH)
 
 $(BIN_PATH): $(BUILD_DIR) $(OBJ_DIR) $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+	@$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
 .PHONY: run
 run: $(BIN_PATH)
 	@./$<
 
+.PHONY: $(OBJS)
 $(OBJS): $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR):
 ifeq ($(OS),Windows_NT)
