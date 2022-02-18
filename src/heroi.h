@@ -8,7 +8,6 @@ typedef struct Heroi {
     int poder;
     int qtPk;
     int atualx, atualy;
-    bool avanca;
 } heroi;
 
 void inicializaHeroi(heroi *hero);

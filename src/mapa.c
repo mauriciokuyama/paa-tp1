@@ -45,84 +45,7 @@ void imprimeMapa(mapa terreno) {
     }
 }
 
-void leArqv(char *path) {
-    FILE *arq;
-    char Linha[100];
-    char *result;
-    //  U, T, S, B e G.
-    mapa terreno;
-    heroi hero;
-    monstro U, T, S, B;
-    guiygas G;
-    int poderhero, qtpk, poderU, recompensaU, poderT, recompensaT, poderS, recompensaS, poderB,
-        recompensaB, poderG, recompensaG, mapax, mapay;
-    int i, j;
-    arq = fopen(path, "rt");
-
-    if (!feof(arq)) {
-        fscanf(arq, "%d %d", &poderhero, &qtpk);
-        printf(" -> O heroi inicia sua jornada com %d de poder e com %d pk's.\n", poderhero, qtpk);
-        fscanf(arq, "%d %d", &poderU, &recompensaU);
-        printf(" -> O monstro U tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderU,
-               recompensaU);
-        fscanf(arq, "%d %d", &poderT, &recompensaT);
-        printf(" -> O monstro T tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderT,
-               recompensaT);
-        fscanf(arq, "%d %d", &poderS, &recompensaS);
-        printf(" -> O monstro S tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderS,
-               recompensaS);
-        fscanf(arq, "%d %d", &poderB, &recompensaB);
-        printf(" -> O monstro B tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderB,
-               recompensaB);
-        fscanf(arq, "%d %d", &poderG, &recompensaG);
-        printf(" -> O chefe final, Guiygas, eh conhecido por possuir %d de poder.\n", poderG);
-        inicializaHeroi(&hero);
-        inicializaMonstro(&U);
-        inicializaMonstro(&T);
-        inicializaMonstro(&S);
-        inicializaMonstro(&B);
-        inicializaBoss(&G);
-        fscanf(arq, "%d %d", &mapax, &mapay);
-        inicializaMapaVazio(&terreno, mapax, mapay);
-    } else {
-        fclose(arq);
-        printf("Problemas na abertura do arquivo\n");
-        return;
-    }
-
-    i = 0;
-    fgets(Linha, 100, arq);
-    while (!feof(arq)) {
-        result = fgets(Linha, 100, arq);
-        if (result) {
-            for (j = 0; j < mapay; j++)
-                terreno.mat[i][j] = Linha[j];
-        }
-        i++;
-    }
-
-    fclose(arq);
-    procuraPosHeroi(terreno, &hero, poderhero, qtpk);
-    procuraPosBoss(terreno, &G, poderG, recompensaG);
-    preencheMonstro(&U, poderU, recompensaU);
-    preencheMonstro(&T, poderT, recompensaT);
-    preencheMonstro(&S, poderS, recompensaS);
-    preencheMonstro(&B, poderB, recompensaB);
-
-    terreno.boss = G;
-    terreno.U = U;
-    terreno.T = T;
-    terreno.S = S;
-    terreno.B = B;
-    printf(" -> Mapa de entrada:\n");
-    imprimeMapa(terreno);
-    printf("------------------------------------\n");
-    movimentaHeroi(&hero, terreno);
-
-    desalocaMapa(terreno);
-}
-
-void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk) {
+static void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk) {
     int i, j;
     for (i = 0; i < terreno.tamanhox; i++) {
         for (j = 0; j < terreno.tamanhoy; j++) {
@@ -133,17 +56,22 @@ void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk) {
         }
     }
 }
-/*
-Linha: 1, Coluna: 2; P: 20, K: 2
-Linha: 2, Coluna: 2;
-Linha: 3, Coluna: 2;
-Linha: 4, Coluna: 2;
-Linha: 5, Coluna: 2;
-Linha: 6, Coluna: 2; P: 30, K: 1
-*/
+
+static void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa) {
+    int i, j;
+    for (i = 0; i < terreno.tamanhox; i++) {
+        for (j = 0; j < terreno.tamanhoy; j++) {
+            if (terreno.mat[i][j] == 'G') {
+                preencheBoss(boss, power, recompensa, i, j);
+                return;
+            }
+        }
+    }
+}
+
 static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, int *horizontal,
                          int iter) {
-    int m,auxx,auxy;
+    int m, auxx, auxy;
     m = 0;
 
     do {
@@ -159,16 +87,20 @@ static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, 
                 printf("Linha: %d, Coluna: %d; ", x + 1, y + 1);
                 switch (terreno.mat[x][y]) {
                 case 'U':
-                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    printf("P: %d, K: %d\n", terreno.matrizaux[x][y].poder,
+                           terreno.matrizaux[x][y].qtpk);
                     break;
                 case 'T':
-                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    printf("P: %d, K: %d\n", terreno.matrizaux[x][y].poder,
+                           terreno.matrizaux[x][y].qtpk);
                     break;
                 case 'S':
-                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    printf("P: %d, K: %d\n", terreno.matrizaux[x][y].poder,
+                           terreno.matrizaux[x][y].qtpk);
                     break;
                 case 'B':
-                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    printf("P: %d, K: %d\n", terreno.matrizaux[x][y].poder,
+                           terreno.matrizaux[x][y].qtpk);
                     break;
                 default:
                     printf("\n");
@@ -184,34 +116,21 @@ static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, 
     } while (m < 4);
 }
 
-void movimentaHeroi(heroi *hero, mapa terreno) {
-
-    int i, j, posicaoinicialx, posicaoinicialy,poderinicial,pkinicial;
-    bool resultado;
-    // cima, direita, baixo, esquerda
-    int vertical[] = {-1, 0, 1, 0};
-    int horizontal[] = {0, 1, 0, -1};
-    // preenche a matriz aux com 0
-    for (i = 0; i < terreno.tamanhox; i++) {
-        for (j = 0; j < terreno.tamanhoy; j++) {
-            terreno.matrizaux[i][j].id = 0;
-        }
-    }
-    posicaoinicialx = hero->atualx;
-    posicaoinicialy = hero->atualy;
-    poderinicial = hero->poder;
-    pkinicial=hero->qtPk;
-    terreno.matrizaux[hero->atualx][hero->atualy].id = 1;
-    resultado = tentaMoverHeroi(hero, terreno, vertical, horizontal, 2);
-    if (resultado == true) {
-        printf("Linha: %d, Coluna: %d; P: %d, K: %d\n",posicaoinicialx+1,posicaoinicialy+1,poderinicial,pkinicial);
-        caminhoFinal(terreno, *hero, posicaoinicialx, posicaoinicialy, vertical, horizontal, 1);
-        printf("Guiygas foi derrotado.\n");
+static bool heroiGanha(heroi *hero, monstro Monster) {
+    if (hero->poder >= Monster.forca) {
+        hero->poder += Monster.recompensa;
+        // printf("poder pos mostro %d\n",hero->poder);
+        return true;
+    } else if (hero->qtPk > 0) {
+        hero->poder += Monster.recompensa;
+        hero->qtPk--;
+        return true;
     } else {
-        printf("Apesar de todas as tentativas, Ness falha em derrotar Giygas!\n");
+        return false;
     }
 }
-void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn, int yn, int m) {
+
+static void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn, int yn, int m) {
     if (m == 0 && terreno->matrizaux[xn][yn].B == false) {
         terreno->matrizaux[hero.atualx][hero.atualy].C = true;
         terreno->matrizaux[xn][yn].B = true;
@@ -230,7 +149,8 @@ void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn, int yn
         *tentarMover = true;
     }
 }
-void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m) {
+
+static void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m) {
     if (m == 0) {
         terreno->matrizaux[hero.atualx][hero.atualy].B = false;
         terreno->matrizaux[xn][yn].C = false;
@@ -245,8 +165,15 @@ void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m) {
         terreno->matrizaux[xn][yn].E = false;
     }
 }
-// VERIFICAR MATRIZAUX[][]
-bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i) {
+
+static void modoAnalise(int *profundidadeMaxima, int *numChamadas, int i) {
+    (*numChamadas)++;
+    if (i > (*profundidadeMaxima))
+        *profundidadeMaxima = i;
+}
+
+static bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i,
+                            int *profundidadeMaxima, int *numChamadas) {
     // printf("i: %d / linha: %d /coluna: %d /poder: %d /pk: %d\n", i, hero->atualx + 1,
     // hero->atualy + 1,
     //     hero->poder, hero->qtPk);
@@ -316,19 +243,19 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
                 int id_ant = terreno.matrizaux[xn][yn].id;
                 if (terreno.matrizaux[xn][yn].id == 0) {
                     terreno.matrizaux[xn][yn].id = i;
-                    terreno.matrizaux[xn][yn].poder=hero->poder;
-                    terreno.matrizaux[xn][yn].qtpk=hero->qtPk;
+                    terreno.matrizaux[xn][yn].poder = hero->poder;
+                    terreno.matrizaux[xn][yn].qtpk = hero->qtPk;
                 }
-                hero->avanca = true;
                 if (i < (terreno.tamanhox * terreno.tamanhoy)) {
-                    q1 = tentaMoverHeroi(hero, terreno, vertical, horizontal, i + 1);
+                    modoAnalise(profundidadeMaxima, numChamadas, i);
+                    q1 = tentaMoverHeroi(hero, terreno, vertical, horizontal, i + 1,
+                                         profundidadeMaxima, numChamadas);
                     if (q1 == false) {
                         desbloqueiaAresta(&terreno, *hero, xant, yant, m);
                         hero->atualx = xant;
                         hero->atualy = yant;
                         hero->poder = poderant;
                         hero->qtPk = pkant;
-                        hero->avanca = false;
                         if (terreno.matrizaux[xn][yn].id != id_ant) {
                             terreno.matrizaux[xn][yn].id = 0;
                         }
@@ -341,30 +268,128 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
     return q1;
 }
 
-bool heroiGanha(heroi *hero, monstro Monster) {
-    if (hero->poder >= Monster.forca) {
-        hero->poder += Monster.recompensa;
-        // printf("poder pos mostro %d\n",hero->poder);
-        return true;
-    } else if (hero->qtPk > 0) {
-        hero->poder += Monster.recompensa;
-        hero->qtPk--;
-        return true;
-    } else {
-        return false;
-    }
-}
+static void movimentaHeroi(heroi *hero, mapa terreno, char opcao) {
 
-void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa) {
-    int i, j;
+    int i, j, posicaoinicialx, posicaoinicialy, poderinicial, pkinicial, profundidadeMaxima,
+        numChamadas;
+    bool resultado;
+    // cima, direita, baixo, esquerda
+    int vertical[] = {-1, 0, 1, 0};
+    int horizontal[] = {0, 1, 0, -1};
+    // preenche a matriz aux com 0
     for (i = 0; i < terreno.tamanhox; i++) {
         for (j = 0; j < terreno.tamanhoy; j++) {
-            if (terreno.mat[i][j] == 'G') {
-                preencheBoss(boss, power, recompensa, i, j);
-                return;
-            }
+            terreno.matrizaux[i][j].id = 0;
         }
     }
+    posicaoinicialx = hero->atualx;
+    posicaoinicialy = hero->atualy;
+    poderinicial = hero->poder;
+    pkinicial = hero->qtPk;
+    terreno.matrizaux[hero->atualx][hero->atualy].id = 1;
+    profundidadeMaxima = 1;
+    numChamadas = 1;
+    resultado =
+        tentaMoverHeroi(hero, terreno, vertical, horizontal, 2, &profundidadeMaxima, &numChamadas);
+    if (resultado == true) {
+        printf("Linha: %d, Coluna: %d; P: %d, K: %d\n", posicaoinicialx + 1, posicaoinicialy + 1,
+               poderinicial, pkinicial);
+        caminhoFinal(terreno, *hero, posicaoinicialx, posicaoinicialy, vertical, horizontal, 1);
+        printf("Guiygas foi derrotado.\n");
+    } else {
+        printf("Apesar de todas as tentativas, Ness falha em derrotar Giygas!\n");
+    }
+    if (opcao == 'S')
+        printf("A profundidade maxima alcancada foi %d e o numero de chamadas recursivas feitas "
+               "foram %d.\n",
+               profundidadeMaxima, numChamadas);
+}
+
+
+void leArqv(char *path) {
+    FILE *arq;
+    char opcao;
+    char buffer[10];
+    char Linha[100];
+    char *result;
+    //  U, T, S, B e G.
+    mapa terreno;
+    heroi hero;
+    monstro U, T, S, B;
+    guiygas G;
+    int poderhero, qtpk, poderU, recompensaU, poderT, recompensaT, poderS, recompensaS, poderB,
+        recompensaB, poderG, recompensaG, mapax, mapay;
+    int i, j;
+    arq = fopen(path, "rt");
+    if (!arq) {
+        printf("Problemas na abertura do arquivo\n");
+        return;
+    }
+    if (!feof(arq)) {
+        printf("Deseja utilizar o modo de analise? (S/N)\n");
+        fgets(buffer, 10, stdin);
+        sscanf(buffer, "%c", &opcao);
+        while (opcao != 'S' && opcao != 'N') {
+            printf("Opcao invalida!\n");
+            fgets(buffer, 10, stdin);
+            sscanf(buffer, "%c", &opcao);
+        }
+        fscanf(arq, "%d %d", &poderhero, &qtpk);
+        printf(" -> O heroi inicia sua jornada com %d de poder e com %d pk's.\n", poderhero, qtpk);
+        fscanf(arq, "%d %d", &poderU, &recompensaU);
+        printf(" -> O monstro U tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderU,
+               recompensaU);
+        fscanf(arq, "%d %d", &poderT, &recompensaT);
+        printf(" -> O monstro T tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderT,
+               recompensaT);
+        fscanf(arq, "%d %d", &poderS, &recompensaS);
+        printf(" -> O monstro S tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderS,
+               recompensaS);
+        fscanf(arq, "%d %d", &poderB, &recompensaB);
+        printf(" -> O monstro B tem %d de pontos de vida e oferece recompensa de %d xp!\n", poderB,
+               recompensaB);
+        fscanf(arq, "%d %d", &poderG, &recompensaG);
+        printf(" -> O chefe final, Guiygas, eh conhecido por possuir %d de poder.\n", poderG);
+        inicializaHeroi(&hero);
+        inicializaMonstro(&U);
+        inicializaMonstro(&T);
+        inicializaMonstro(&S);
+        inicializaMonstro(&B);
+        inicializaBoss(&G);
+        fscanf(arq, "%d %d", &mapax, &mapay);
+        inicializaMapaVazio(&terreno, mapax, mapay);
+    }
+
+    i = 0;
+    fgets(Linha, 100, arq);
+    while (!feof(arq)) {
+        result = fgets(Linha, 100, arq);
+        if (result) {
+            for (j = 0; j < mapay; j++)
+                terreno.mat[i][j] = Linha[j];
+        }
+        i++;
+    }
+
+    fclose(arq);
+    procuraPosHeroi(terreno, &hero, poderhero, qtpk);
+    procuraPosBoss(terreno, &G, poderG, recompensaG);
+    preencheMonstro(&U, poderU, recompensaU);
+    preencheMonstro(&T, poderT, recompensaT);
+    preencheMonstro(&S, poderS, recompensaS);
+    preencheMonstro(&B, poderB, recompensaB);
+
+    terreno.boss = G;
+    terreno.U = U;
+    terreno.T = T;
+    terreno.S = S;
+    terreno.B = B;
+    printf(" -> Mapa de entrada:\n");
+    imprimeMapa(terreno);
+    printf("------------------------------------\n");
+    movimentaHeroi(&hero, terreno, opcao);
+
+    desalocaMapa(terreno);
 }
 
 void desalocaMapa(mapa terreno) {
