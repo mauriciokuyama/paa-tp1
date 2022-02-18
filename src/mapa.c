@@ -6,6 +6,7 @@
 #include "mapa.h"
 #include "monstros.h"
 
+// cria o mapa
 void inicializaMapaVazio(mapa *terreno, int x, int y) {
     int i, j;
 
@@ -13,7 +14,7 @@ void inicializaMapaVazio(mapa *terreno, int x, int y) {
     for (i = 0; i < x; i++) {
         terreno->mat[i] = malloc(y * sizeof(char));
     }
-    // preenchendo a matriz com  .
+    // preenchendo a matriz com '.'
     for (i = 0; i < x; i++) {
         for (j = 0; j < y; j++) {
             terreno->mat[i][j] = '.';
@@ -35,6 +36,7 @@ void inicializaMapaVazio(mapa *terreno, int x, int y) {
     terreno->tamanhoy = y;
 }
 
+// imprime o mapa recebido pelo arquivo
 void imprimeMapa(mapa terreno) {
     int i, j;
     for (i = 0; i < terreno.tamanhox; i++) {
@@ -45,6 +47,7 @@ void imprimeMapa(mapa terreno) {
     }
 }
 
+// busca localização do herói no mapa e atribui suas caracteristicas na estrutura dele
 static void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk) {
     int i, j;
     for (i = 0; i < terreno.tamanhox; i++) {
@@ -57,6 +60,7 @@ static void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk) {
     }
 }
 
+// busca localização do Guiygas no mapa e atribui suas caracteristicas na estrutura dele
 static void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompensa) {
     int i, j;
     for (i = 0; i < terreno.tamanhox; i++) {
@@ -69,6 +73,7 @@ static void procuraPosBoss(mapa terreno, guiygas *boss, int power, int recompens
     }
 }
 
+// imprime resultado final percorrendo a matriz auxiliar
 static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, int *horizontal,
                          int iter) {
     int m, auxx, auxy;
@@ -116,10 +121,10 @@ static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, 
     } while (m < 4);
 }
 
+// verifica se o heroi consegue derrotar o monstro
 static bool heroiGanha(heroi *hero, monstro Monster) {
     if (hero->poder >= Monster.forca) {
         hero->poder += Monster.recompensa;
-        // printf("poder pos mostro %d\n",hero->poder);
         return true;
     } else if (hero->qtPk > 0) {
         hero->poder += Monster.recompensa;
@@ -130,6 +135,7 @@ static bool heroiGanha(heroi *hero, monstro Monster) {
     }
 }
 
+// bloqueia a direção do movimento que está sendo realizado para que não se repita
 static void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn, int yn, int m) {
     if (m == 0 && terreno->matrizaux[xn][yn].B == false) {
         terreno->matrizaux[hero.atualx][hero.atualy].C = true;
@@ -150,6 +156,7 @@ static void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn,
     }
 }
 
+// desbloqueia a direção do movimento em caso de backtracking
 static void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m) {
     if (m == 0) {
         terreno->matrizaux[hero.atualx][hero.atualy].B = false;
@@ -165,18 +172,18 @@ static void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m) 
         terreno->matrizaux[xn][yn].E = false;
     }
 }
-
+// função para contabilizar os contadores do modo de análise
 static void modoAnalise(int *profundidadeMaxima, int *numChamadas, int i) {
     (*numChamadas)++;
     if (i > (*profundidadeMaxima))
         *profundidadeMaxima = i;
 }
 
+// função recursiva responsável por tentar realizar as movimentações do heroi no mapa exercendo as
+// verificações necessárias
+
 static bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i,
                             int *profundidadeMaxima, int *numChamadas) {
-    // printf("i: %d / linha: %d /coluna: %d /poder: %d /pk: %d\n", i, hero->atualx + 1,
-    // hero->atualy + 1,
-    //     hero->poder, hero->qtPk);
     int xn, yn, m, xant, yant, poderant, pkant;
     bool q1;
     bool tentarMover;
@@ -192,8 +199,6 @@ static bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horiz
         pkant = hero->qtPk;
         if (xn < terreno.tamanhox && xn >= 0 && yn < terreno.tamanhoy && yn >= 0) {
             if (terreno.mat[xn][yn] == 'G') {
-                // printf("O heroi encontrou o monstro final. Seu poder no momento: %d \n",
-                // hero->poder);
                 if (hero->poder >= terreno.boss.forca) {
                     return true;
                 }
@@ -268,8 +273,8 @@ static bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horiz
     return q1;
 }
 
+// função que chama a tentaMoverHeroi e responsável por identificar o resultado do caminho
 static void movimentaHeroi(heroi *hero, mapa terreno, char opcao) {
-
     int i, j, posicaoinicialx, posicaoinicialy, poderinicial, pkinicial, profundidadeMaxima,
         numChamadas;
     bool resultado;
@@ -305,14 +310,14 @@ static void movimentaHeroi(heroi *hero, mapa terreno, char opcao) {
                profundidadeMaxima, numChamadas);
 }
 
-
+// realiza a leitura do arquivo e faz os solicita os preenchimentos necessários
 void leArqv(char *path) {
     FILE *arq;
     char opcao;
     char buffer[10];
     char Linha[100];
     char *result;
-    //  U, T, S, B e G.
+    // A ordem dos monstros segundo a entrada U, T, S, B e G.
     mapa terreno;
     heroi hero;
     monstro U, T, S, B;
@@ -392,6 +397,7 @@ void leArqv(char *path) {
     desalocaMapa(terreno);
 }
 
+// função para desalocar
 void desalocaMapa(mapa terreno) {
     for (int i = 0; i < terreno.tamanhox; i++) {
         free(terreno.mat[i]);
