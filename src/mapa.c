@@ -280,7 +280,7 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
 
                 bloqueiaAresta(&terreno, *hero, &tentarMover, xn, yn, m);
             }
-            else
+            else if(terreno.matrizaux[xn][yn].id == 0)
             {
                 monstro monster;
                 switch (terreno.mat[xn][yn])
