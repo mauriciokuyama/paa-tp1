@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 typedef struct Item {
-    int id;
+    int id,poder,qtpk;
     bool E, D, C, B;
 } item;
 

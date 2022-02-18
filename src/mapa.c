@@ -156,7 +156,24 @@ static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, 
 
             if (terreno.matrizaux[x][y].id == (iter + 1)) {
 
-                printf("Linha: %d, Coluna: %d;", x + 1, y + 1);
+                printf("Linha: %d, Coluna: %d; ", x + 1, y + 1);
+                switch (terreno.mat[x][y]) {
+                case 'U':
+                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    break;
+                case 'T':
+                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    break;
+                case 'S':
+                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    break;
+                case 'B':
+                    printf("P: %d, K: %d\n",terreno.matrizaux[x][y].poder,terreno.matrizaux[x][y].qtpk);
+                    break;
+                default:
+                    printf("\n");
+                    break;
+                }
                 caminhoFinal(terreno, hero, x, y, vertical, horizontal, iter + 1);
                 return;
             }
@@ -169,7 +186,7 @@ static void caminhoFinal(mapa terreno, heroi hero, int x, int y, int *vertical, 
 
 void movimentaHeroi(heroi *hero, mapa terreno) {
 
-    int i, j, posicaoinicialx, posicaoinicialy;
+    int i, j, posicaoinicialx, posicaoinicialy,poderinicial,pkinicial;
     bool resultado;
     // cima, direita, baixo, esquerda
     int vertical[] = {-1, 0, 1, 0};
@@ -182,10 +199,14 @@ void movimentaHeroi(heroi *hero, mapa terreno) {
     }
     posicaoinicialx = hero->atualx;
     posicaoinicialy = hero->atualy;
+    poderinicial = hero->poder;
+    pkinicial=hero->qtPk;
     terreno.matrizaux[hero->atualx][hero->atualy].id = 1;
     resultado = tentaMoverHeroi(hero, terreno, vertical, horizontal, 2);
     if (resultado == true) {
+        printf("Linha: %d, Coluna: %d; P: %d, K: %d\n",posicaoinicialx+1,posicaoinicialy+1,poderinicial,pkinicial);
         caminhoFinal(terreno, *hero, posicaoinicialx, posicaoinicialy, vertical, horizontal, 1);
+        printf("Guiygas foi derrotado.\n");
     } else {
         printf("Apesar de todas as tentativas, Ness falha em derrotar Giygas!\n");
     }
@@ -247,7 +268,6 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
                 // printf("O heroi encontrou o monstro final. Seu poder no momento: %d \n",
                 // hero->poder);
                 if (hero->poder >= terreno.boss.forca) {
-                    printf("Guiygas foi derrotado.\n");
                     return true;
                 }
             }
@@ -296,6 +316,8 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
                 int id_ant = terreno.matrizaux[xn][yn].id;
                 if (terreno.matrizaux[xn][yn].id == 0) {
                     terreno.matrizaux[xn][yn].id = i;
+                    terreno.matrizaux[xn][yn].poder=hero->poder;
+                    terreno.matrizaux[xn][yn].qtpk=hero->qtPk;
                 }
                 hero->avanca = true;
                 if (i < (terreno.tamanhox * terreno.tamanhoy)) {
