@@ -83,7 +83,7 @@ void leArqv(char *path)
         fscanf(arq, "%d %d", &poderB, &recompensaB);
         printf(" -> O monstro B tem %d de pontos de vida e oferece recompensa de %d xp!\n",poderB,recompensaB);
         fscanf(arq, "%d %d", &poderG, &recompensaG);
-        printf(" -> O chefe final, Guiygas, eh conhecido por possuir %d de poder\n",poderG);
+        printf(" -> O chefe final, Guiygas, eh conhecido por possuir %d de poder.\n",poderG);
         inicializaHeroi(&hero);
         inicializaMonstro(&U);
         inicializaMonstro(&T);
@@ -149,11 +149,22 @@ void procuraPosHeroi(mapa terreno, heroi *hero, int power, int pk)
         }
     }
 }
+/*
+Linha: 1, Coluna: 2; P: 20, K: 2
+Linha: 2, Coluna: 2;
+Linha: 3, Coluna: 2;
+Linha: 4, Coluna: 2;
+Linha: 5, Coluna: 2;
+Linha: 6, Coluna: 2; P: 30, K: 1
+*/
+static void caminhoFinal(mapa terreno,heroi hero){
+
+}
 
 void movimentaHeroi(heroi *hero, mapa terreno)
 {
 
-    int i, j;
+    int i, j, posicaoinicialx, posicaoinicialy;
     bool resultado;
     // cima, direita, baixo, esquerda
     int vertical[] = {-1, 0, 1, 0};
@@ -182,14 +193,6 @@ void movimentaHeroi(heroi *hero, mapa terreno)
     else
     {
         printf("Apesar de todas as tentativas, Ness falha em derrotar Giygas!\n");
-        for (i = 0; i < terreno.tamanhox; i++)
-        {
-            for (j = 0; j < terreno.tamanhoy; j++)
-            {
-                printf("%02d ", terreno.matrizaux[i][j].id);
-            }
-            printf("\n");
-        }
     }
 }
 void bloqueiaAresta(mapa *terreno, heroi hero, bool *tentarMover, int xn, int yn, int m)
@@ -245,8 +248,8 @@ void desbloqueiaAresta(mapa *terreno, heroi hero, int xn, int yn, int m)
 // VERIFICAR MATRIZAUX[][]
 bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, int i)
 {
-    printf("i: %d / linha: %d /coluna: %d /poder: %d /pk: %d\n", i, hero->atualx + 1, hero->atualy + 1,
-           hero->poder, hero->qtPk);
+    //printf("i: %d / linha: %d /coluna: %d /poder: %d /pk: %d\n", i, hero->atualx + 1, hero->atualy + 1,
+        //    hero->poder, hero->qtPk);
     int xn, yn, m, xant, yant, poderant, pkant;
     bool q1;
     bool tentarMover;
