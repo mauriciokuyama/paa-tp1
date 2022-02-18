@@ -73,11 +73,17 @@ void leArqv(char *path)
     if (!feof(arq))
     {
         fscanf(arq, "%d %d", &poderhero, &qtpk);
+        printf("O heroi inicia sua jornada com %d de poder e com %d pk's\n",poderhero,qtpk);
         fscanf(arq, "%d %d", &poderU, &recompensaU);
+        printf("O monstro U tem %d de pontos de vida e oferece recompensa de %d xp!",poderU,recompensaU);
         fscanf(arq, "%d %d", &poderT, &recompensaT);
+        printf("O monstro T tem %d de pontos de vida e oferece recompensa de %d xp!",poderT,recompensaT);
         fscanf(arq, "%d %d", &poderS, &recompensaS);
+        printf("O monstro S tem %d de pontos de vida e oferece recompensa de %d xp!",poderS,recompensaS);
         fscanf(arq, "%d %d", &poderB, &recompensaB);
+        printf("O monstro B tem %d de pontos de vida e oferece recompensa de %d xp!",poderB,recompensaB);
         fscanf(arq, "%d %d", &poderG, &recompensaG);
+        printf("O chefe final, Guiygas, eh conhecido por possuir %d de poder\n",poderG);
         inicializaHeroi(&hero);
         inicializaMonstro(&U);
         inicializaMonstro(&T);
@@ -85,6 +91,7 @@ void leArqv(char *path)
         inicializaMonstro(&B);
         inicializaBoss(&G);
         fscanf(arq, "%d %d", &mapax, &mapay);
+        imprimeMapa(terreno);
         inicializaMapaVazio(&terreno, mapax, mapay);
     }
     else
@@ -173,7 +180,7 @@ void movimentaHeroi(heroi *hero, mapa terreno)
     }
     else
     {
-        printf("Nao tem solucao\n");
+        printf("Apesar de todas as tentativas, Ness falha em derrotar Giygas!\n");
         for (i = 0; i < terreno.tamanhox; i++)
         {
             for (j = 0; j < terreno.tamanhoy; j++)
@@ -257,9 +264,10 @@ bool tentaMoverHeroi(heroi *hero, mapa terreno, int *vertical, int *horizontal, 
         {
             if (terreno.mat[xn][yn] == 'G')
             {
-                printf("i poder m %d %d %d\n", i, hero->poder, m);
+                printf("O heroi encontrou o monstro final. Seu poder no momento: %d \n", hero->poder);
                 if (hero->poder >= terreno.boss.forca)
                 {
+                    printf("Guiygas foi derrotado.\n");
                     return true;
                 }
             }
