@@ -302,7 +302,7 @@ static void movimentaHeroi(heroi *hero, mapa terreno, char opcao) {
         caminhoFinal(terreno, *hero, posicaoinicialx, posicaoinicialy, vertical, horizontal, 1);
         printf("Guiygas foi derrotado.\n");
     } else {
-        printf("Apesar de todas as tentativas, Ness falha em derrotar Giygas!\n");
+        printf("Apesar de todas as tentativas, Ness falha em derrotar Guiygas!\n");
     }
     if (opcao == 'S')
         printf("A profundidade maxima alcancada foi %d e o numero de chamadas recursivas feitas "
